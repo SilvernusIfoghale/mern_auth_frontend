@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { API_URL } from "@/app/server";
 import { setAuthUser } from "@/app/store/authSlice";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { Loader } from "lucide-react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -39,8 +37,10 @@ const ResetPassword = () => {
       dispatch(setAuthUser(response.data.data.user));
       toast.success("Password reset successful");
       router.push("/auth/login");
-    } catch (error: any) {
-      toast.error(error.response);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      }
     } finally {
       setLoading(false);
     }

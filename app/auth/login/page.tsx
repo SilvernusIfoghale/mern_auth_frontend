@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { API_URL } from "@/app/server";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import axios from "axios";
 import { Loader } from "lucide-react";
-import { useDispatch, UseDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setAuthUser } from "@/app/store/authSlice";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -40,10 +39,12 @@ const Login: React.FC = () => {
       toast.success("Login Successful");
       dispatch(setAuthUser(user));
       router.push("/");
-    } catch (error: any) {
-      setLoading(false);
-      toast.error(error.response.data.message);
-      console.log(error);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        setLoading(false);
+        toast.error(error.response.data.message);
+        console.log(error);
+      }
     } finally {
       setLoading(false);
     }

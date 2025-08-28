@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { API_URL } from "@/app/server";
@@ -77,9 +76,10 @@ const Verify = () => {
       dispatch(setAuthUser(verifiedUser));
       toast.success("Verification Successful");
       router.push("/");
-    } catch (error: any) {
-      console.log(error.response.data.message);
-      toast.error(error.response.data.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -92,9 +92,10 @@ const Verify = () => {
         withCredentials: true,
       });
       toast.success("New Otp is sent to your email");
-    } catch (error: any) {
-      console.log(error.message);
-      toast.error(error.response.data.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      }
     } finally {
       setLoading(false);
     }

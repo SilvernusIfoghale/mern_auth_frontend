@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { API_URL } from "@/app/server";
@@ -25,9 +24,11 @@ const ForgotPassword = () => {
       );
       toast.success("Reset code sent to your email");
       router.push(`/auth/reset-password?email=${encodeURIComponent(email)}`);
-    } catch (error: any) {
-      console.log(error.response.data.message);
-      toast.error(error.response.data.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message);
+      }
     } finally {
       setLoading(false);
     }
