@@ -130,7 +130,6 @@ const Verify = () => {
                 variant={"secondary"}
                 size={"sm"}
                 className="cursor-pointer"
-                onClick={handleSubmit}
               >
                 <Loader className="animate-spin" />
               </Button>
@@ -138,7 +137,6 @@ const Verify = () => {
                 variant={"ghost"}
                 size={"sm"}
                 className="text-blue-400 hover:text-blue-500 text-sm hover:bg-transparent cursor-pointer"
-                onClick={handleResendOtp}
               >
                 <Loader className="animate-spin" />
               </Button>
